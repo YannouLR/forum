@@ -40,9 +40,6 @@ class Router {
             }
         }
 
-        if (!$routeFound) {
-            return (new AppController())->error404();
-        }
     }
 
     public static function redirect(string $url) {

@@ -2,40 +2,32 @@
 
 namespace App;
 
-session_start();
+use Router\Router;
+
 
 require_once('vendor/autoload.php');
 
-use Router\Router;
 $router = new Router($_GET['url']);
 
-if(!isset($_SESSION['Type'])) {
-    $_SESSION['Type'] = null;  
-}
+$router->get('/', 'App\Controller\ArticleController@showAll');
+$router->post("/ArticleA", "App\Controller\ArticleController@add");
+$router->get("/ArticleA", "App\Controller\ArticleController@add");
+$router->get("/ArticleM/:id", "App\Controller\ArticleController@modify");
+$router->post("/ArticleM/:id", "App\Controller\ArticleController@modify");
+$router->post("/ArticleD/:id", "App\Controller\ArticleController@delete");
 
-switch ($_SESSION['Type']) {
-    case 'client':
-        $router->get("/home", "App\Controller\AppController@index");
-        $router->get("/cats", "App\Controller\CatController@index");
-        $router->get("/logout", "App\Controller\AppController@logout"); //
-        break;
-        
-    case 'manager':
-        $router->get("/logout", "App\Controller\AppController@logout");
-        $router->get("/home", "App\Controller\AppController@index");
+$router->post("/EditorA", "App\Controller\EditorController@add");
+$router->get("/EditorA", "App\Controller\EditorController@add");
+$router->get("/EditorM/:id", "App\Controller\EditorController@modify");
+$router->post("/EditorM/:id", "App\Controller\EditorController@modify");
+$router->get("/EditorD/:id", "App\Controller\EditorController@delete");
 
-        $router->get("/cats", "App\Controller\CatController@index");
-        $router->post("/cats", "App\Controller\CatController@add");
-        $router->put("/cats/:id", "App\Controller\CatController@modify");
-        break;
-    default:
-        $router->get("/", "App\Controller\AppController@login");
-        $router->post("/", "App\Controller\AppController@login");
-    
-        $router->get("/cats", "App\Controller\CatController@index");
-        $router->get("/lahaine", "App\Controller\AppController@addFake");
-        $router->get("/logout", "App\Controller\AppController@logout"); //
-        break;
-}
+$router->get("/VisitorA", "App\Controller\VisitorController@add");
+$router->post("/VisitorA", "App\Controller\VisitorController@add");
+$router->post("/VisitorM/:id", "App\Controller\VisitorController@modify");
+$router->get("/VisitorM/:id", "App\Controller\VisitorController@modify");
+$router->get("/VisitorD/:id", "App\Controller\VisitorController@delete");
 
+$router->get("/AvisA", "App\Controller\AvisController@add");
+$router->post("/AvisA", "App\Controller\AvisController@add");
 $router->run();
